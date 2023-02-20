@@ -1,109 +1,44 @@
 debugger;
+/*
+- When someone presses a key, i want to check what key that is then, I need to find the corresponding element on the page
+- When i find the element, I want to find its parent and get the dataset[key] from it.
+- When I get the dataset[key], I need to loop through the <audio> elements and find the one with the matching dataset[key]
+- When it is found, I want to play the sound
+*/
 
-let soundData = [
-    {
-      "soundName": "clap",
-      "audioSource": "sounds/clap.wav",
-      key: 65,
-      kbd: 'a',
-    },
-    {
-      "soundName": "hihat",
-      "audioSource": "sounds/hihat.wav",
-      key: 83,
-      kbd: 's',
-    },
-    {
-      "soundName": "kick",
-      "audioSource": "sounds/kick.wav",
-      key: 68,
-      kbd: 'd'
-    },
-    {
-      "soundName": "openhat",
-      "audioSource": "sounds/openhat.wav",
-      key: 70,
-      kbd: 'f'
-
-    },
-    {
-      "soundName": "boom",
-      "audioSource": "sounds/boom.wav",
-      key: 71,
-      kbd: 'g'
-      
-    },
-    {
-      "soundName": "ride",
-      "audioSource": "sounds/ride.wav",
-      key: 72,
-      kbd: 'h'
-    },
-    {
-      "soundName": "snare",
-      "audioSource": "sounds/snare.wav",
-      key: 74,
-      kbd: 'j', 
-    },
-    {
-      "soundName": "tom",
-      "audioSource": "sounds/tom.wav",
-      key: 75,
-      kbd: 'k', 
-    },
-    {
-      "soundName": "tink",
-      "audioSource": "sounds/tink.wav",
-      key: 76,
-      kbd: 'l', 
-    }
-]
-  
-
-// Write an event listener that listens for the keystroke and plays the sound when the key is pressed down
-const $log = document.getElementById('log');
-const $keys = document.querySelectorAll('.key');
+const $kbd = document.querySelectorAll('kbd');
 const $allAudio = document.querySelectorAll('audio');
 
-
 document.addEventListener('keydown', (e) => {
-    const pressedKeyCode = e.keyCode;
-    const pressedKey = e.key;
-    let matchingKey;
-    console.log(pressedKeyCode);
-    
-    for(let i=0; i < $keys.length; i++){
-        // console.log($keys[i])
-        let dataSetKey = $keys[i].dataset.key;
-        if (dataSetKey == pressedKeyCode) {
-            console.log('sound key pressed')
-            matchingKey= $keys[i].children[0].innerHTML;
-            matchingKey = matchingKey.toLowerCase();
-        } 
+  const pressedKey = e.key;
+  let pressedKeyNum;
 
-        if (pressedKey == matchingKey) {
-            console.log('Letter key identified')
-        }
+  console.log(pressedKey);
+
+  for (let i = 0; i < $kbd.length; i++) {
+    const element = $kbd[i];
+    // Check if element innerHTML equals pressedKey
+    if (element.innerHTML.toLowerCase() == pressedKey) {
+      console.log('key pressed');
+      console.log(element);
+      let elementParent = element.parentElement;
+      console.log(elementParent);
+      pressedKeyNum = elementParent.dataset.key;
     }
-    
-    console.log(matchingKey)
-
-    for (const item of $keys) {
-        if (item.dataset.key === pressedKeyCode)
-            console.log(item);
-        // Loop through the keys array 
+  }
+  console.log('pressedKeyNum', pressedKeyNum);
+  
+  for (const file of $allAudio){
+    if (file.dataset.key == pressedKeyNum) {
+      console.log('will play audio next');
+      console.log(file.src);
+      playAudio(file.src);
     }
-    
-    // for(let i=0; i < $allAudio.length; i++){
-        
-    //     if ($allAudio[i].dataset.key == pressedKey){
-    //         console.log($allAudio[i].dataset.key);
-    //         console.log('sound key pressed')
-    //     }
-    // }
-
+  }
 });
 
-function playAudio(audioElement) {
-    audioElement.play();
+
+function playAudio(audioPath){
+  const audio = new Audio(audioPath);
+  audio.play();
 }
