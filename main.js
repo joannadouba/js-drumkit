@@ -13,25 +13,17 @@ document.addEventListener('keydown', (e) => {
   const pressedKey = e.key;
   let pressedKeyNum;
 
-  console.log(pressedKey);
-
   for (let i = 0; i < $kbd.length; i++) {
     const element = $kbd[i];
-    // Check if element innerHTML equals pressedKey
+    let elementParent = element.parentElement;
+    
     if (element.innerHTML.toLowerCase() == pressedKey) {
-      console.log('key pressed');
-      console.log(element);
-      let elementParent = element.parentElement;
-      console.log(elementParent);
       pressedKeyNum = elementParent.dataset.key;
     }
   }
-  console.log('pressedKeyNum', pressedKeyNum);
   
   for (const file of $allAudio){
     if (file.dataset.key == pressedKeyNum) {
-      console.log('will play audio next');
-      console.log(file.src);
       playAudio(file.src);
     }
   }
