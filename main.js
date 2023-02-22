@@ -19,6 +19,10 @@ document.addEventListener('keydown', (e) => {
     
     if (element.innerHTML.toLowerCase() == pressedKey) {
       pressedKeyNum = elementParent.dataset.key;
+      elementParent.classList.add('playing');
+      setTimeout(function(){ 
+        elementParent.classList.remove('playing')
+       }, 200);
     }
   }
   
